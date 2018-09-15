@@ -1,0 +1,3488 @@
+   0  $accept : file $end
+
+   1  file : listd
+   2       |
+
+   3  listd : decl
+   4        | listd decl
+
+   5  decl : func_decl ';'
+   6       | procedure_decl ';'
+   7       | func
+   8       | procedure
+   9       | var ';'
+  10       | tUSE type tIDENTIFIER ';'
+
+  11  func_decl : tPUBLIC type tFUNCTION tIDENTIFIER tUSES vars
+  12            | type tFUNCTION tIDENTIFIER tUSES vars
+  13            | tPUBLIC type tFUNCTION tIDENTIFIER
+  14            | type tFUNCTION tIDENTIFIER
+
+  15  procedure_decl : tPUBLIC tPROCEDURE tIDENTIFIER tUSES vars
+  16                 | tPROCEDURE tIDENTIFIER tUSES vars
+  17                 | tPUBLIC tPROCEDURE tIDENTIFIER
+  18                 | tPROCEDURE tIDENTIFIER
+
+  19  vars : var
+  20       | vars ',' var
+
+  21  var : tPUBLIC type tIDENTIFIER '(' tINITIALLY expr ')'
+  22      | type tIDENTIFIER '(' tINITIALLY expr ')'
+  23      | tPUBLIC type tIDENTIFIER
+  24      | type tIDENTIFIER
+
+  25  listi : instruction
+  26        | listi instruction
+
+  27  func : tDEFINE tPUBLIC type tFUNCTION tIDENTIFIER tAS block
+  28       | tDEFINE type tFUNCTION tIDENTIFIER tAS block
+  29       | tDEFINE tPUBLIC type tFUNCTION tIDENTIFIER tON vars tAS block
+  30       | tDEFINE type tFUNCTION tIDENTIFIER tON vars tAS block
+
+  31  procedure : tDEFINE tPUBLIC tPROCEDURE tIDENTIFIER tAS block
+  32            | tDEFINE tPROCEDURE tIDENTIFIER tAS block
+  33            | tDEFINE tPUBLIC tPROCEDURE tIDENTIFIER tON vars tAS block
+  34            | tDEFINE tPROCEDURE tIDENTIFIER tON vars tAS block
+
+  35  block : ';' '{' listd listi '}'
+  36        | ';' '{' listd '}'
+  37        | ';' '{' listi '}'
+  38        | ';' '{' '}'
+
+  39  type : tINT
+  40       | tREAL
+  41       | tNEWS
+  42       | smalls tFAKE
+  43       | huges tFAKE
+  44       | fakes tNEWS
+
+  45  smalls : tINT
+  46         | smalls tINT
+
+  47  huges : tREAL
+  48        | huges tREAL
+
+  49  fakes : tFAKE
+  50        | fakes tFAKE
+
+  51  instruction : expr ';'
+  52              | tTWEET expr ';'
+  53              | tPOST expr ';'
+  54              | tAGAIN tINTEGER ';'
+  55              | tAGAIN ';'
+  56              | tSTOP tINTEGER ';'
+  57              | tSTOP ';'
+  58              | tRETURN expr ';'
+  59              | tRETURN ';'
+  60              | block ';'
+  61              | assignment ';'
+  62              | sweep
+  63              | if
+
+  64  if : tIF expr tTHEN block tELIF elsif
+  65     | tIF expr tTHEN block
+  66     | tIF expr tTHEN block tELSE block
+
+  67  elsif : expr tTHEN block
+  68        | expr tTHEN block tELSE block
+  69        | elsif tELIF expr tTHEN block
+  70        | elsif tELIF expr tTHEN block tELSE block
+
+  71  assignment : tASSIGN expr tTO lval
+
+  72  sweep : tSWEEPING lval tFROM expr tTO expr tBY expr tDO block
+  73        | tSWEEPING lval tFROM expr tTO expr tDO block
+
+  74  expr : tINTEGER
+  75       | strings
+  76       | tDOUBLE
+  77       | tNULL
+  78       | tREAD
+  79       | expr tOBJECTS
+  80       | tNOT expr
+  81       | '-' expr
+  82       | '+' expr
+  83       | expr '+' expr
+  84       | expr '-' expr
+  85       | expr '*' expr
+  86       | expr '/' expr
+  87       | expr '%' expr
+  88       | expr '<' expr
+  89       | expr '>' expr
+  90       | expr tEQ expr
+  91       | expr tAND expr
+  92       | expr tOR expr
+  93       | lval '?'
+  94       | specialexpr
+
+  95  strings : tSTRING
+  96          | strings tSTRING
+
+  97  param : expr
+  98        | param ',' expr
+
+  99  lval : tIDENTIFIER
+ 100       | tCELL expr tAT specialexpr
+
+ 101  specialexpr : tDO tIDENTIFIER
+ 102              | tUSE param tFOR tIDENTIFIER
+ 103              | lval
+ 104              | '(' expr ')'
+
+state 0
+	$accept : . file $end  (0)
+	file : .  (2)
+
+	tDEFINE  shift 1
+	tPUBLIC  shift 2
+	tPROCEDURE  shift 3
+	tINT  shift 4
+	tREAL  shift 5
+	tNEWS  shift 6
+	tFAKE  shift 7
+	tUSE  shift 8
+	$end  reduce 2
+
+	file  goto 9
+	listd  goto 10
+	type  goto 11
+	smalls  goto 12
+	huges  goto 13
+	fakes  goto 14
+	func_decl  goto 15
+	procedure_decl  goto 16
+	decl  goto 17
+	var  goto 18
+	func  goto 19
+	procedure  goto 20
+
+
+state 1
+	func : tDEFINE . tPUBLIC type tFUNCTION tIDENTIFIER tAS block  (27)
+	func : tDEFINE . type tFUNCTION tIDENTIFIER tAS block  (28)
+	func : tDEFINE . tPUBLIC type tFUNCTION tIDENTIFIER tON vars tAS block  (29)
+	func : tDEFINE . type tFUNCTION tIDENTIFIER tON vars tAS block  (30)
+	procedure : tDEFINE . tPUBLIC tPROCEDURE tIDENTIFIER tAS block  (31)
+	procedure : tDEFINE . tPROCEDURE tIDENTIFIER tAS block  (32)
+	procedure : tDEFINE . tPUBLIC tPROCEDURE tIDENTIFIER tON vars tAS block  (33)
+	procedure : tDEFINE . tPROCEDURE tIDENTIFIER tON vars tAS block  (34)
+
+	tPUBLIC  shift 21
+	tPROCEDURE  shift 22
+	tINT  shift 4
+	tREAL  shift 5
+	tNEWS  shift 6
+	tFAKE  shift 7
+	.  error
+
+	type  goto 23
+	smalls  goto 12
+	huges  goto 13
+	fakes  goto 14
+
+
+state 2
+	func_decl : tPUBLIC . type tFUNCTION tIDENTIFIER tUSES vars  (11)
+	func_decl : tPUBLIC . type tFUNCTION tIDENTIFIER  (13)
+	procedure_decl : tPUBLIC . tPROCEDURE tIDENTIFIER tUSES vars  (15)
+	procedure_decl : tPUBLIC . tPROCEDURE tIDENTIFIER  (17)
+	var : tPUBLIC . type tIDENTIFIER '(' tINITIALLY expr ')'  (21)
+	var : tPUBLIC . type tIDENTIFIER  (23)
+
+	tPROCEDURE  shift 24
+	tINT  shift 4
+	tREAL  shift 5
+	tNEWS  shift 6
+	tFAKE  shift 7
+	.  error
+
+	type  goto 25
+	smalls  goto 12
+	huges  goto 13
+	fakes  goto 14
+
+
+state 3
+	procedure_decl : tPROCEDURE . tIDENTIFIER tUSES vars  (16)
+	procedure_decl : tPROCEDURE . tIDENTIFIER  (18)
+
+	tIDENTIFIER  shift 26
+	.  error
+
+
+state 4
+	type : tINT .  (39)
+	smalls : tINT .  (45)
+
+	tIDENTIFIER  reduce 39
+	tFUNCTION  reduce 39
+	tINT  reduce 45
+	tFAKE  reduce 45
+
+
+state 5
+	type : tREAL .  (40)
+	huges : tREAL .  (47)
+
+	tIDENTIFIER  reduce 40
+	tFUNCTION  reduce 40
+	tREAL  reduce 47
+	tFAKE  reduce 47
+
+
+state 6
+	type : tNEWS .  (41)
+
+	.  reduce 41
+
+
+state 7
+	fakes : tFAKE .  (49)
+
+	.  reduce 49
+
+
+state 8
+	decl : tUSE . type tIDENTIFIER ';'  (10)
+
+	tINT  shift 4
+	tREAL  shift 5
+	tNEWS  shift 6
+	tFAKE  shift 7
+	.  error
+
+	type  goto 27
+	smalls  goto 12
+	huges  goto 13
+	fakes  goto 14
+
+
+state 9
+	$accept : file . $end  (0)
+
+	$end  accept
+
+
+state 10
+	file : listd .  (1)
+	listd : listd . decl  (4)
+
+	tDEFINE  shift 1
+	tPUBLIC  shift 2
+	tPROCEDURE  shift 3
+	tINT  shift 4
+	tREAL  shift 5
+	tNEWS  shift 6
+	tFAKE  shift 7
+	tUSE  shift 8
+	$end  reduce 1
+
+	type  goto 11
+	smalls  goto 12
+	huges  goto 13
+	fakes  goto 14
+	func_decl  goto 15
+	procedure_decl  goto 16
+	decl  goto 28
+	var  goto 18
+	func  goto 19
+	procedure  goto 20
+
+
+state 11
+	func_decl : type . tFUNCTION tIDENTIFIER tUSES vars  (12)
+	func_decl : type . tFUNCTION tIDENTIFIER  (14)
+	var : type . tIDENTIFIER '(' tINITIALLY expr ')'  (22)
+	var : type . tIDENTIFIER  (24)
+
+	tIDENTIFIER  shift 29
+	tFUNCTION  shift 30
+	.  error
+
+
+state 12
+	type : smalls . tFAKE  (42)
+	smalls : smalls . tINT  (46)
+
+	tINT  shift 31
+	tFAKE  shift 32
+	.  error
+
+
+state 13
+	type : huges . tFAKE  (43)
+	huges : huges . tREAL  (48)
+
+	tREAL  shift 33
+	tFAKE  shift 34
+	.  error
+
+
+state 14
+	type : fakes . tNEWS  (44)
+	fakes : fakes . tFAKE  (50)
+
+	tNEWS  shift 35
+	tFAKE  shift 36
+	.  error
+
+
+state 15
+	decl : func_decl . ';'  (5)
+
+	';'  shift 37
+	.  error
+
+
+state 16
+	decl : procedure_decl . ';'  (6)
+
+	';'  shift 38
+	.  error
+
+
+state 17
+	listd : decl .  (3)
+
+	.  reduce 3
+
+
+state 18
+	decl : var . ';'  (9)
+
+	';'  shift 39
+	.  error
+
+
+state 19
+	decl : func .  (7)
+
+	.  reduce 7
+
+
+state 20
+	decl : procedure .  (8)
+
+	.  reduce 8
+
+
+state 21
+	func : tDEFINE tPUBLIC . type tFUNCTION tIDENTIFIER tAS block  (27)
+	func : tDEFINE tPUBLIC . type tFUNCTION tIDENTIFIER tON vars tAS block  (29)
+	procedure : tDEFINE tPUBLIC . tPROCEDURE tIDENTIFIER tAS block  (31)
+	procedure : tDEFINE tPUBLIC . tPROCEDURE tIDENTIFIER tON vars tAS block  (33)
+
+	tPROCEDURE  shift 40
+	tINT  shift 4
+	tREAL  shift 5
+	tNEWS  shift 6
+	tFAKE  shift 7
+	.  error
+
+	type  goto 41
+	smalls  goto 12
+	huges  goto 13
+	fakes  goto 14
+
+
+state 22
+	procedure : tDEFINE tPROCEDURE . tIDENTIFIER tAS block  (32)
+	procedure : tDEFINE tPROCEDURE . tIDENTIFIER tON vars tAS block  (34)
+
+	tIDENTIFIER  shift 42
+	.  error
+
+
+state 23
+	func : tDEFINE type . tFUNCTION tIDENTIFIER tAS block  (28)
+	func : tDEFINE type . tFUNCTION tIDENTIFIER tON vars tAS block  (30)
+
+	tFUNCTION  shift 43
+	.  error
+
+
+state 24
+	procedure_decl : tPUBLIC tPROCEDURE . tIDENTIFIER tUSES vars  (15)
+	procedure_decl : tPUBLIC tPROCEDURE . tIDENTIFIER  (17)
+
+	tIDENTIFIER  shift 44
+	.  error
+
+
+state 25
+	func_decl : tPUBLIC type . tFUNCTION tIDENTIFIER tUSES vars  (11)
+	func_decl : tPUBLIC type . tFUNCTION tIDENTIFIER  (13)
+	var : tPUBLIC type . tIDENTIFIER '(' tINITIALLY expr ')'  (21)
+	var : tPUBLIC type . tIDENTIFIER  (23)
+
+	tIDENTIFIER  shift 45
+	tFUNCTION  shift 46
+	.  error
+
+
+state 26
+	procedure_decl : tPROCEDURE tIDENTIFIER . tUSES vars  (16)
+	procedure_decl : tPROCEDURE tIDENTIFIER .  (18)
+
+	tUSES  shift 47
+	';'  reduce 18
+
+
+state 27
+	decl : tUSE type . tIDENTIFIER ';'  (10)
+
+	tIDENTIFIER  shift 48
+	.  error
+
+
+state 28
+	listd : listd decl .  (4)
+
+	.  reduce 4
+
+
+state 29
+	var : type tIDENTIFIER . '(' tINITIALLY expr ')'  (22)
+	var : type tIDENTIFIER .  (24)
+
+	'('  shift 49
+	tAS  reduce 24
+	';'  reduce 24
+	','  reduce 24
+
+
+state 30
+	func_decl : type tFUNCTION . tIDENTIFIER tUSES vars  (12)
+	func_decl : type tFUNCTION . tIDENTIFIER  (14)
+
+	tIDENTIFIER  shift 50
+	.  error
+
+
+state 31
+	smalls : smalls tINT .  (46)
+
+	.  reduce 46
+
+
+state 32
+	type : smalls tFAKE .  (42)
+
+	.  reduce 42
+
+
+state 33
+	huges : huges tREAL .  (48)
+
+	.  reduce 48
+
+
+state 34
+	type : huges tFAKE .  (43)
+
+	.  reduce 43
+
+
+state 35
+	type : fakes tNEWS .  (44)
+
+	.  reduce 44
+
+
+state 36
+	fakes : fakes tFAKE .  (50)
+
+	.  reduce 50
+
+
+state 37
+	decl : func_decl ';' .  (5)
+
+	.  reduce 5
+
+
+state 38
+	decl : procedure_decl ';' .  (6)
+
+	.  reduce 6
+
+
+state 39
+	decl : var ';' .  (9)
+
+	.  reduce 9
+
+
+state 40
+	procedure : tDEFINE tPUBLIC tPROCEDURE . tIDENTIFIER tAS block  (31)
+	procedure : tDEFINE tPUBLIC tPROCEDURE . tIDENTIFIER tON vars tAS block  (33)
+
+	tIDENTIFIER  shift 51
+	.  error
+
+
+state 41
+	func : tDEFINE tPUBLIC type . tFUNCTION tIDENTIFIER tAS block  (27)
+	func : tDEFINE tPUBLIC type . tFUNCTION tIDENTIFIER tON vars tAS block  (29)
+
+	tFUNCTION  shift 52
+	.  error
+
+
+state 42
+	procedure : tDEFINE tPROCEDURE tIDENTIFIER . tAS block  (32)
+	procedure : tDEFINE tPROCEDURE tIDENTIFIER . tON vars tAS block  (34)
+
+	tAS  shift 53
+	tON  shift 54
+	.  error
+
+
+state 43
+	func : tDEFINE type tFUNCTION . tIDENTIFIER tAS block  (28)
+	func : tDEFINE type tFUNCTION . tIDENTIFIER tON vars tAS block  (30)
+
+	tIDENTIFIER  shift 55
+	.  error
+
+
+state 44
+	procedure_decl : tPUBLIC tPROCEDURE tIDENTIFIER . tUSES vars  (15)
+	procedure_decl : tPUBLIC tPROCEDURE tIDENTIFIER .  (17)
+
+	tUSES  shift 56
+	';'  reduce 17
+
+
+state 45
+	var : tPUBLIC type tIDENTIFIER . '(' tINITIALLY expr ')'  (21)
+	var : tPUBLIC type tIDENTIFIER .  (23)
+
+	'('  shift 57
+	tAS  reduce 23
+	';'  reduce 23
+	','  reduce 23
+
+
+state 46
+	func_decl : tPUBLIC type tFUNCTION . tIDENTIFIER tUSES vars  (11)
+	func_decl : tPUBLIC type tFUNCTION . tIDENTIFIER  (13)
+
+	tIDENTIFIER  shift 58
+	.  error
+
+
+state 47
+	procedure_decl : tPROCEDURE tIDENTIFIER tUSES . vars  (16)
+
+	tPUBLIC  shift 59
+	tINT  shift 4
+	tREAL  shift 5
+	tNEWS  shift 6
+	tFAKE  shift 7
+	.  error
+
+	vars  goto 60
+	type  goto 61
+	smalls  goto 12
+	huges  goto 13
+	fakes  goto 14
+	var  goto 62
+
+
+state 48
+	decl : tUSE type tIDENTIFIER . ';'  (10)
+
+	';'  shift 63
+	.  error
+
+
+state 49
+	var : type tIDENTIFIER '(' . tINITIALLY expr ')'  (22)
+
+	tINITIALLY  shift 64
+	.  error
+
+
+state 50
+	func_decl : type tFUNCTION tIDENTIFIER . tUSES vars  (12)
+	func_decl : type tFUNCTION tIDENTIFIER .  (14)
+
+	tUSES  shift 65
+	';'  reduce 14
+
+
+state 51
+	procedure : tDEFINE tPUBLIC tPROCEDURE tIDENTIFIER . tAS block  (31)
+	procedure : tDEFINE tPUBLIC tPROCEDURE tIDENTIFIER . tON vars tAS block  (33)
+
+	tAS  shift 66
+	tON  shift 67
+	.  error
+
+
+state 52
+	func : tDEFINE tPUBLIC type tFUNCTION . tIDENTIFIER tAS block  (27)
+	func : tDEFINE tPUBLIC type tFUNCTION . tIDENTIFIER tON vars tAS block  (29)
+
+	tIDENTIFIER  shift 68
+	.  error
+
+
+state 53
+	procedure : tDEFINE tPROCEDURE tIDENTIFIER tAS . block  (32)
+
+	';'  shift 69
+	.  error
+
+	block  goto 70
+
+
+state 54
+	procedure : tDEFINE tPROCEDURE tIDENTIFIER tON . vars tAS block  (34)
+
+	tPUBLIC  shift 59
+	tINT  shift 4
+	tREAL  shift 5
+	tNEWS  shift 6
+	tFAKE  shift 7
+	.  error
+
+	vars  goto 71
+	type  goto 61
+	smalls  goto 12
+	huges  goto 13
+	fakes  goto 14
+	var  goto 62
+
+
+state 55
+	func : tDEFINE type tFUNCTION tIDENTIFIER . tAS block  (28)
+	func : tDEFINE type tFUNCTION tIDENTIFIER . tON vars tAS block  (30)
+
+	tAS  shift 72
+	tON  shift 73
+	.  error
+
+
+state 56
+	procedure_decl : tPUBLIC tPROCEDURE tIDENTIFIER tUSES . vars  (15)
+
+	tPUBLIC  shift 59
+	tINT  shift 4
+	tREAL  shift 5
+	tNEWS  shift 6
+	tFAKE  shift 7
+	.  error
+
+	vars  goto 74
+	type  goto 61
+	smalls  goto 12
+	huges  goto 13
+	fakes  goto 14
+	var  goto 62
+
+
+state 57
+	var : tPUBLIC type tIDENTIFIER '(' . tINITIALLY expr ')'  (21)
+
+	tINITIALLY  shift 75
+	.  error
+
+
+state 58
+	func_decl : tPUBLIC type tFUNCTION tIDENTIFIER . tUSES vars  (11)
+	func_decl : tPUBLIC type tFUNCTION tIDENTIFIER .  (13)
+
+	tUSES  shift 76
+	';'  reduce 13
+
+
+state 59
+	var : tPUBLIC . type tIDENTIFIER '(' tINITIALLY expr ')'  (21)
+	var : tPUBLIC . type tIDENTIFIER  (23)
+
+	tINT  shift 4
+	tREAL  shift 5
+	tNEWS  shift 6
+	tFAKE  shift 7
+	.  error
+
+	type  goto 77
+	smalls  goto 12
+	huges  goto 13
+	fakes  goto 14
+
+
+state 60
+	procedure_decl : tPROCEDURE tIDENTIFIER tUSES vars .  (16)
+	vars : vars . ',' var  (20)
+
+	','  shift 78
+	';'  reduce 16
+
+
+state 61
+	var : type . tIDENTIFIER '(' tINITIALLY expr ')'  (22)
+	var : type . tIDENTIFIER  (24)
+
+	tIDENTIFIER  shift 29
+	.  error
+
+
+state 62
+	vars : var .  (19)
+
+	.  reduce 19
+
+
+state 63
+	decl : tUSE type tIDENTIFIER ';' .  (10)
+
+	.  reduce 10
+
+
+state 64
+	var : type tIDENTIFIER '(' tINITIALLY . expr ')'  (22)
+
+	tINTEGER  shift 79
+	tIDENTIFIER  shift 80
+	tSTRING  shift 81
+	tDOUBLE  shift 82
+	tREAD  shift 83
+	tDO  shift 84
+	tNOT  shift 85
+	tUSE  shift 86
+	tCELL  shift 87
+	tNULL  shift 88
+	'+'  shift 89
+	'-'  shift 90
+	'('  shift 91
+	.  error
+
+	expr  goto 92
+	specialexpr  goto 93
+	lval  goto 94
+	strings  goto 95
+
+
+state 65
+	func_decl : type tFUNCTION tIDENTIFIER tUSES . vars  (12)
+
+	tPUBLIC  shift 59
+	tINT  shift 4
+	tREAL  shift 5
+	tNEWS  shift 6
+	tFAKE  shift 7
+	.  error
+
+	vars  goto 96
+	type  goto 61
+	smalls  goto 12
+	huges  goto 13
+	fakes  goto 14
+	var  goto 62
+
+
+state 66
+	procedure : tDEFINE tPUBLIC tPROCEDURE tIDENTIFIER tAS . block  (31)
+
+	';'  shift 69
+	.  error
+
+	block  goto 97
+
+
+state 67
+	procedure : tDEFINE tPUBLIC tPROCEDURE tIDENTIFIER tON . vars tAS block  (33)
+
+	tPUBLIC  shift 59
+	tINT  shift 4
+	tREAL  shift 5
+	tNEWS  shift 6
+	tFAKE  shift 7
+	.  error
+
+	vars  goto 98
+	type  goto 61
+	smalls  goto 12
+	huges  goto 13
+	fakes  goto 14
+	var  goto 62
+
+
+state 68
+	func : tDEFINE tPUBLIC type tFUNCTION tIDENTIFIER . tAS block  (27)
+	func : tDEFINE tPUBLIC type tFUNCTION tIDENTIFIER . tON vars tAS block  (29)
+
+	tAS  shift 99
+	tON  shift 100
+	.  error
+
+
+state 69
+	block : ';' . '{' listd listi '}'  (35)
+	block : ';' . '{' listd '}'  (36)
+	block : ';' . '{' listi '}'  (37)
+	block : ';' . '{' '}'  (38)
+
+	'{'  shift 101
+	.  error
+
+
+state 70
+	procedure : tDEFINE tPROCEDURE tIDENTIFIER tAS block .  (32)
+
+	.  reduce 32
+
+
+state 71
+	vars : vars . ',' var  (20)
+	procedure : tDEFINE tPROCEDURE tIDENTIFIER tON vars . tAS block  (34)
+
+	tAS  shift 102
+	','  shift 78
+	.  error
+
+
+state 72
+	func : tDEFINE type tFUNCTION tIDENTIFIER tAS . block  (28)
+
+	';'  shift 69
+	.  error
+
+	block  goto 103
+
+
+state 73
+	func : tDEFINE type tFUNCTION tIDENTIFIER tON . vars tAS block  (30)
+
+	tPUBLIC  shift 59
+	tINT  shift 4
+	tREAL  shift 5
+	tNEWS  shift 6
+	tFAKE  shift 7
+	.  error
+
+	vars  goto 104
+	type  goto 61
+	smalls  goto 12
+	huges  goto 13
+	fakes  goto 14
+	var  goto 62
+
+
+state 74
+	procedure_decl : tPUBLIC tPROCEDURE tIDENTIFIER tUSES vars .  (15)
+	vars : vars . ',' var  (20)
+
+	','  shift 78
+	';'  reduce 15
+
+
+state 75
+	var : tPUBLIC type tIDENTIFIER '(' tINITIALLY . expr ')'  (21)
+
+	tINTEGER  shift 79
+	tIDENTIFIER  shift 80
+	tSTRING  shift 81
+	tDOUBLE  shift 82
+	tREAD  shift 83
+	tDO  shift 84
+	tNOT  shift 85
+	tUSE  shift 86
+	tCELL  shift 87
+	tNULL  shift 88
+	'+'  shift 89
+	'-'  shift 90
+	'('  shift 91
+	.  error
+
+	expr  goto 105
+	specialexpr  goto 93
+	lval  goto 94
+	strings  goto 95
+
+
+state 76
+	func_decl : tPUBLIC type tFUNCTION tIDENTIFIER tUSES . vars  (11)
+
+	tPUBLIC  shift 59
+	tINT  shift 4
+	tREAL  shift 5
+	tNEWS  shift 6
+	tFAKE  shift 7
+	.  error
+
+	vars  goto 106
+	type  goto 61
+	smalls  goto 12
+	huges  goto 13
+	fakes  goto 14
+	var  goto 62
+
+
+state 77
+	var : tPUBLIC type . tIDENTIFIER '(' tINITIALLY expr ')'  (21)
+	var : tPUBLIC type . tIDENTIFIER  (23)
+
+	tIDENTIFIER  shift 45
+	.  error
+
+
+state 78
+	vars : vars ',' . var  (20)
+
+	tPUBLIC  shift 59
+	tINT  shift 4
+	tREAL  shift 5
+	tNEWS  shift 6
+	tFAKE  shift 7
+	.  error
+
+	type  goto 61
+	smalls  goto 12
+	huges  goto 13
+	fakes  goto 14
+	var  goto 107
+
+
+state 79
+	expr : tINTEGER .  (74)
+
+	.  reduce 74
+
+
+state 80
+	lval : tIDENTIFIER .  (99)
+
+	.  reduce 99
+
+
+state 81
+	strings : tSTRING .  (95)
+
+	.  reduce 95
+
+
+state 82
+	expr : tDOUBLE .  (76)
+
+	.  reduce 76
+
+
+state 83
+	expr : tREAD .  (78)
+
+	.  reduce 78
+
+
+state 84
+	specialexpr : tDO . tIDENTIFIER  (101)
+
+	tIDENTIFIER  shift 108
+	.  error
+
+
+state 85
+	expr : tNOT . expr  (80)
+
+	tINTEGER  shift 79
+	tIDENTIFIER  shift 80
+	tSTRING  shift 81
+	tDOUBLE  shift 82
+	tREAD  shift 83
+	tDO  shift 84
+	tNOT  shift 85
+	tUSE  shift 86
+	tCELL  shift 87
+	tNULL  shift 88
+	'+'  shift 89
+	'-'  shift 90
+	'('  shift 91
+	.  error
+
+	expr  goto 109
+	specialexpr  goto 93
+	lval  goto 94
+	strings  goto 95
+
+
+state 86
+	specialexpr : tUSE . param tFOR tIDENTIFIER  (102)
+
+	tINTEGER  shift 79
+	tIDENTIFIER  shift 80
+	tSTRING  shift 81
+	tDOUBLE  shift 82
+	tREAD  shift 83
+	tDO  shift 84
+	tNOT  shift 85
+	tUSE  shift 86
+	tCELL  shift 87
+	tNULL  shift 88
+	'+'  shift 89
+	'-'  shift 90
+	'('  shift 91
+	.  error
+
+	param  goto 110
+	expr  goto 111
+	specialexpr  goto 93
+	lval  goto 94
+	strings  goto 95
+
+
+state 87
+	lval : tCELL . expr tAT specialexpr  (100)
+
+	tINTEGER  shift 79
+	tIDENTIFIER  shift 80
+	tSTRING  shift 81
+	tDOUBLE  shift 82
+	tREAD  shift 83
+	tDO  shift 84
+	tNOT  shift 85
+	tUSE  shift 86
+	tCELL  shift 87
+	tNULL  shift 88
+	'+'  shift 89
+	'-'  shift 90
+	'('  shift 91
+	.  error
+
+	expr  goto 112
+	specialexpr  goto 93
+	lval  goto 94
+	strings  goto 95
+
+
+state 88
+	expr : tNULL .  (77)
+
+	.  reduce 77
+
+
+state 89
+	expr : '+' . expr  (82)
+
+	tINTEGER  shift 79
+	tIDENTIFIER  shift 80
+	tSTRING  shift 81
+	tDOUBLE  shift 82
+	tREAD  shift 83
+	tDO  shift 84
+	tNOT  shift 85
+	tUSE  shift 86
+	tCELL  shift 87
+	tNULL  shift 88
+	'+'  shift 89
+	'-'  shift 90
+	'('  shift 91
+	.  error
+
+	expr  goto 113
+	specialexpr  goto 93
+	lval  goto 94
+	strings  goto 95
+
+
+state 90
+	expr : '-' . expr  (81)
+
+	tINTEGER  shift 79
+	tIDENTIFIER  shift 80
+	tSTRING  shift 81
+	tDOUBLE  shift 82
+	tREAD  shift 83
+	tDO  shift 84
+	tNOT  shift 85
+	tUSE  shift 86
+	tCELL  shift 87
+	tNULL  shift 88
+	'+'  shift 89
+	'-'  shift 90
+	'('  shift 91
+	.  error
+
+	expr  goto 114
+	specialexpr  goto 93
+	lval  goto 94
+	strings  goto 95
+
+
+state 91
+	specialexpr : '(' . expr ')'  (104)
+
+	tINTEGER  shift 79
+	tIDENTIFIER  shift 80
+	tSTRING  shift 81
+	tDOUBLE  shift 82
+	tREAD  shift 83
+	tDO  shift 84
+	tNOT  shift 85
+	tUSE  shift 86
+	tCELL  shift 87
+	tNULL  shift 88
+	'+'  shift 89
+	'-'  shift 90
+	'('  shift 91
+	.  error
+
+	expr  goto 115
+	specialexpr  goto 93
+	lval  goto 94
+	strings  goto 95
+
+
+state 92
+	var : type tIDENTIFIER '(' tINITIALLY expr . ')'  (22)
+	expr : expr . tOBJECTS  (79)
+	expr : expr . '+' expr  (83)
+	expr : expr . '-' expr  (84)
+	expr : expr . '*' expr  (85)
+	expr : expr . '/' expr  (86)
+	expr : expr . '%' expr  (87)
+	expr : expr . '<' expr  (88)
+	expr : expr . '>' expr  (89)
+	expr : expr . tEQ expr  (90)
+	expr : expr . tAND expr  (91)
+	expr : expr . tOR expr  (92)
+
+	tAND  shift 116
+	tOR  shift 117
+	tOBJECTS  shift 118
+	tEQ  shift 119
+	'>'  shift 120
+	'<'  shift 121
+	'+'  shift 122
+	'-'  shift 123
+	'*'  shift 124
+	'/'  shift 125
+	'%'  shift 126
+	')'  shift 127
+	.  error
+
+
+state 93
+	expr : specialexpr .  (94)
+
+	.  reduce 94
+
+
+state 94
+	expr : lval . '?'  (93)
+	specialexpr : lval .  (103)
+
+	'?'  shift 128
+	tTHEN  reduce 103
+	tTO  reduce 103
+	tBY  reduce 103
+	tDO  reduce 103
+	tAND  reduce 103
+	tOR  reduce 103
+	tFOR  reduce 103
+	tAT  reduce 103
+	tOBJECTS  reduce 103
+	tEQ  reduce 103
+	'>'  reduce 103
+	'<'  reduce 103
+	'+'  reduce 103
+	'-'  reduce 103
+	'*'  reduce 103
+	'/'  reduce 103
+	'%'  reduce 103
+	';'  reduce 103
+	','  reduce 103
+	')'  reduce 103
+
+
+state 95
+	expr : strings .  (75)
+	strings : strings . tSTRING  (96)
+
+	tSTRING  shift 129
+	tTHEN  reduce 75
+	tTO  reduce 75
+	tBY  reduce 75
+	tDO  reduce 75
+	tAND  reduce 75
+	tOR  reduce 75
+	tFOR  reduce 75
+	tAT  reduce 75
+	tOBJECTS  reduce 75
+	tEQ  reduce 75
+	'>'  reduce 75
+	'<'  reduce 75
+	'+'  reduce 75
+	'-'  reduce 75
+	'*'  reduce 75
+	'/'  reduce 75
+	'%'  reduce 75
+	';'  reduce 75
+	','  reduce 75
+	')'  reduce 75
+
+
+state 96
+	func_decl : type tFUNCTION tIDENTIFIER tUSES vars .  (12)
+	vars : vars . ',' var  (20)
+
+	','  shift 78
+	';'  reduce 12
+
+
+state 97
+	procedure : tDEFINE tPUBLIC tPROCEDURE tIDENTIFIER tAS block .  (31)
+
+	.  reduce 31
+
+
+state 98
+	vars : vars . ',' var  (20)
+	procedure : tDEFINE tPUBLIC tPROCEDURE tIDENTIFIER tON vars . tAS block  (33)
+
+	tAS  shift 130
+	','  shift 78
+	.  error
+
+
+state 99
+	func : tDEFINE tPUBLIC type tFUNCTION tIDENTIFIER tAS . block  (27)
+
+	';'  shift 69
+	.  error
+
+	block  goto 131
+
+
+state 100
+	func : tDEFINE tPUBLIC type tFUNCTION tIDENTIFIER tON . vars tAS block  (29)
+
+	tPUBLIC  shift 59
+	tINT  shift 4
+	tREAL  shift 5
+	tNEWS  shift 6
+	tFAKE  shift 7
+	.  error
+
+	vars  goto 132
+	type  goto 61
+	smalls  goto 12
+	huges  goto 13
+	fakes  goto 14
+	var  goto 62
+
+
+state 101
+	block : ';' '{' . listd listi '}'  (35)
+	block : ';' '{' . listd '}'  (36)
+	block : ';' '{' . listi '}'  (37)
+	block : ';' '{' . '}'  (38)
+
+	tINTEGER  shift 79
+	tIDENTIFIER  shift 80
+	tSTRING  shift 81
+	tDOUBLE  shift 82
+	tIF  shift 133
+	tREAD  shift 83
+	tDEFINE  shift 1
+	tPUBLIC  shift 2
+	tPROCEDURE  shift 3
+	tINT  shift 4
+	tREAL  shift 5
+	tNEWS  shift 6
+	tFAKE  shift 7
+	tTWEET  shift 134
+	tPOST  shift 135
+	tAGAIN  shift 136
+	tSTOP  shift 137
+	tRETURN  shift 138
+	tASSIGN  shift 139
+	tSWEEPING  shift 140
+	tDO  shift 84
+	tNOT  shift 85
+	tUSE  shift 141
+	tCELL  shift 87
+	tNULL  shift 88
+	'+'  shift 89
+	'-'  shift 90
+	';'  shift 69
+	'('  shift 91
+	'}'  shift 142
+	.  error
+
+	instruction  goto 143
+	if  goto 144
+	sweep  goto 145
+	block  goto 146
+	listd  goto 147
+	listi  goto 148
+	expr  goto 149
+	assignment  goto 150
+	specialexpr  goto 93
+	lval  goto 94
+	type  goto 11
+	smalls  goto 12
+	huges  goto 13
+	fakes  goto 14
+	func_decl  goto 15
+	procedure_decl  goto 16
+	decl  goto 17
+	var  goto 18
+	func  goto 19
+	procedure  goto 20
+	strings  goto 95
+
+
+state 102
+	procedure : tDEFINE tPROCEDURE tIDENTIFIER tON vars tAS . block  (34)
+
+	';'  shift 69
+	.  error
+
+	block  goto 151
+
+
+state 103
+	func : tDEFINE type tFUNCTION tIDENTIFIER tAS block .  (28)
+
+	.  reduce 28
+
+
+state 104
+	vars : vars . ',' var  (20)
+	func : tDEFINE type tFUNCTION tIDENTIFIER tON vars . tAS block  (30)
+
+	tAS  shift 152
+	','  shift 78
+	.  error
+
+
+state 105
+	var : tPUBLIC type tIDENTIFIER '(' tINITIALLY expr . ')'  (21)
+	expr : expr . tOBJECTS  (79)
+	expr : expr . '+' expr  (83)
+	expr : expr . '-' expr  (84)
+	expr : expr . '*' expr  (85)
+	expr : expr . '/' expr  (86)
+	expr : expr . '%' expr  (87)
+	expr : expr . '<' expr  (88)
+	expr : expr . '>' expr  (89)
+	expr : expr . tEQ expr  (90)
+	expr : expr . tAND expr  (91)
+	expr : expr . tOR expr  (92)
+
+	tAND  shift 116
+	tOR  shift 117
+	tOBJECTS  shift 118
+	tEQ  shift 119
+	'>'  shift 120
+	'<'  shift 121
+	'+'  shift 122
+	'-'  shift 123
+	'*'  shift 124
+	'/'  shift 125
+	'%'  shift 126
+	')'  shift 153
+	.  error
+
+
+state 106
+	func_decl : tPUBLIC type tFUNCTION tIDENTIFIER tUSES vars .  (11)
+	vars : vars . ',' var  (20)
+
+	','  shift 78
+	';'  reduce 11
+
+
+state 107
+	vars : vars ',' var .  (20)
+
+	.  reduce 20
+
+
+state 108
+	specialexpr : tDO tIDENTIFIER .  (101)
+
+	.  reduce 101
+
+
+state 109
+	expr : expr . tOBJECTS  (79)
+	expr : tNOT expr .  (80)
+	expr : expr . '+' expr  (83)
+	expr : expr . '-' expr  (84)
+	expr : expr . '*' expr  (85)
+	expr : expr . '/' expr  (86)
+	expr : expr . '%' expr  (87)
+	expr : expr . '<' expr  (88)
+	expr : expr . '>' expr  (89)
+	expr : expr . tEQ expr  (90)
+	expr : expr . tAND expr  (91)
+	expr : expr . tOR expr  (92)
+
+	tAND  shift 116
+	tOR  shift 117
+	tOBJECTS  shift 118
+	tEQ  shift 119
+	'>'  shift 120
+	'<'  shift 121
+	'+'  shift 122
+	'-'  shift 123
+	'*'  shift 124
+	'/'  shift 125
+	'%'  shift 126
+	tTHEN  reduce 80
+	tTO  reduce 80
+	tBY  reduce 80
+	tDO  reduce 80
+	tFOR  reduce 80
+	tAT  reduce 80
+	';'  reduce 80
+	','  reduce 80
+	')'  reduce 80
+
+
+state 110
+	param : param . ',' expr  (98)
+	specialexpr : tUSE param . tFOR tIDENTIFIER  (102)
+
+	tFOR  shift 154
+	','  shift 155
+	.  error
+
+
+state 111
+	expr : expr . tOBJECTS  (79)
+	expr : expr . '+' expr  (83)
+	expr : expr . '-' expr  (84)
+	expr : expr . '*' expr  (85)
+	expr : expr . '/' expr  (86)
+	expr : expr . '%' expr  (87)
+	expr : expr . '<' expr  (88)
+	expr : expr . '>' expr  (89)
+	expr : expr . tEQ expr  (90)
+	expr : expr . tAND expr  (91)
+	expr : expr . tOR expr  (92)
+	param : expr .  (97)
+
+	tAND  shift 116
+	tOR  shift 117
+	tOBJECTS  shift 118
+	tEQ  shift 119
+	'>'  shift 120
+	'<'  shift 121
+	'+'  shift 122
+	'-'  shift 123
+	'*'  shift 124
+	'/'  shift 125
+	'%'  shift 126
+	tFOR  reduce 97
+	','  reduce 97
+
+
+state 112
+	expr : expr . tOBJECTS  (79)
+	expr : expr . '+' expr  (83)
+	expr : expr . '-' expr  (84)
+	expr : expr . '*' expr  (85)
+	expr : expr . '/' expr  (86)
+	expr : expr . '%' expr  (87)
+	expr : expr . '<' expr  (88)
+	expr : expr . '>' expr  (89)
+	expr : expr . tEQ expr  (90)
+	expr : expr . tAND expr  (91)
+	expr : expr . tOR expr  (92)
+	lval : tCELL expr . tAT specialexpr  (100)
+
+	tAND  shift 116
+	tOR  shift 117
+	tAT  shift 156
+	tOBJECTS  shift 118
+	tEQ  shift 119
+	'>'  shift 120
+	'<'  shift 121
+	'+'  shift 122
+	'-'  shift 123
+	'*'  shift 124
+	'/'  shift 125
+	'%'  shift 126
+	.  error
+
+
+state 113
+	expr : expr . tOBJECTS  (79)
+	expr : '+' expr .  (82)
+	expr : expr . '+' expr  (83)
+	expr : expr . '-' expr  (84)
+	expr : expr . '*' expr  (85)
+	expr : expr . '/' expr  (86)
+	expr : expr . '%' expr  (87)
+	expr : expr . '<' expr  (88)
+	expr : expr . '>' expr  (89)
+	expr : expr . tEQ expr  (90)
+	expr : expr . tAND expr  (91)
+	expr : expr . tOR expr  (92)
+
+	.  reduce 82
+
+
+state 114
+	expr : expr . tOBJECTS  (79)
+	expr : '-' expr .  (81)
+	expr : expr . '+' expr  (83)
+	expr : expr . '-' expr  (84)
+	expr : expr . '*' expr  (85)
+	expr : expr . '/' expr  (86)
+	expr : expr . '%' expr  (87)
+	expr : expr . '<' expr  (88)
+	expr : expr . '>' expr  (89)
+	expr : expr . tEQ expr  (90)
+	expr : expr . tAND expr  (91)
+	expr : expr . tOR expr  (92)
+
+	.  reduce 81
+
+
+state 115
+	expr : expr . tOBJECTS  (79)
+	expr : expr . '+' expr  (83)
+	expr : expr . '-' expr  (84)
+	expr : expr . '*' expr  (85)
+	expr : expr . '/' expr  (86)
+	expr : expr . '%' expr  (87)
+	expr : expr . '<' expr  (88)
+	expr : expr . '>' expr  (89)
+	expr : expr . tEQ expr  (90)
+	expr : expr . tAND expr  (91)
+	expr : expr . tOR expr  (92)
+	specialexpr : '(' expr . ')'  (104)
+
+	tAND  shift 116
+	tOR  shift 117
+	tOBJECTS  shift 118
+	tEQ  shift 119
+	'>'  shift 120
+	'<'  shift 121
+	'+'  shift 122
+	'-'  shift 123
+	'*'  shift 124
+	'/'  shift 125
+	'%'  shift 126
+	')'  shift 157
+	.  error
+
+
+state 116
+	expr : expr tAND . expr  (91)
+
+	tINTEGER  shift 79
+	tIDENTIFIER  shift 80
+	tSTRING  shift 81
+	tDOUBLE  shift 82
+	tREAD  shift 83
+	tDO  shift 84
+	tNOT  shift 85
+	tUSE  shift 86
+	tCELL  shift 87
+	tNULL  shift 88
+	'+'  shift 89
+	'-'  shift 90
+	'('  shift 91
+	.  error
+
+	expr  goto 158
+	specialexpr  goto 93
+	lval  goto 94
+	strings  goto 95
+
+
+state 117
+	expr : expr tOR . expr  (92)
+
+	tINTEGER  shift 79
+	tIDENTIFIER  shift 80
+	tSTRING  shift 81
+	tDOUBLE  shift 82
+	tREAD  shift 83
+	tDO  shift 84
+	tNOT  shift 85
+	tUSE  shift 86
+	tCELL  shift 87
+	tNULL  shift 88
+	'+'  shift 89
+	'-'  shift 90
+	'('  shift 91
+	.  error
+
+	expr  goto 159
+	specialexpr  goto 93
+	lval  goto 94
+	strings  goto 95
+
+
+state 118
+	expr : expr tOBJECTS .  (79)
+
+	.  reduce 79
+
+
+state 119
+	expr : expr tEQ . expr  (90)
+
+	tINTEGER  shift 79
+	tIDENTIFIER  shift 80
+	tSTRING  shift 81
+	tDOUBLE  shift 82
+	tREAD  shift 83
+	tDO  shift 84
+	tNOT  shift 85
+	tUSE  shift 86
+	tCELL  shift 87
+	tNULL  shift 88
+	'+'  shift 89
+	'-'  shift 90
+	'('  shift 91
+	.  error
+
+	expr  goto 160
+	specialexpr  goto 93
+	lval  goto 94
+	strings  goto 95
+
+
+state 120
+	expr : expr '>' . expr  (89)
+
+	tINTEGER  shift 79
+	tIDENTIFIER  shift 80
+	tSTRING  shift 81
+	tDOUBLE  shift 82
+	tREAD  shift 83
+	tDO  shift 84
+	tNOT  shift 85
+	tUSE  shift 86
+	tCELL  shift 87
+	tNULL  shift 88
+	'+'  shift 89
+	'-'  shift 90
+	'('  shift 91
+	.  error
+
+	expr  goto 161
+	specialexpr  goto 93
+	lval  goto 94
+	strings  goto 95
+
+
+state 121
+	expr : expr '<' . expr  (88)
+
+	tINTEGER  shift 79
+	tIDENTIFIER  shift 80
+	tSTRING  shift 81
+	tDOUBLE  shift 82
+	tREAD  shift 83
+	tDO  shift 84
+	tNOT  shift 85
+	tUSE  shift 86
+	tCELL  shift 87
+	tNULL  shift 88
+	'+'  shift 89
+	'-'  shift 90
+	'('  shift 91
+	.  error
+
+	expr  goto 162
+	specialexpr  goto 93
+	lval  goto 94
+	strings  goto 95
+
+
+state 122
+	expr : expr '+' . expr  (83)
+
+	tINTEGER  shift 79
+	tIDENTIFIER  shift 80
+	tSTRING  shift 81
+	tDOUBLE  shift 82
+	tREAD  shift 83
+	tDO  shift 84
+	tNOT  shift 85
+	tUSE  shift 86
+	tCELL  shift 87
+	tNULL  shift 88
+	'+'  shift 89
+	'-'  shift 90
+	'('  shift 91
+	.  error
+
+	expr  goto 163
+	specialexpr  goto 93
+	lval  goto 94
+	strings  goto 95
+
+
+state 123
+	expr : expr '-' . expr  (84)
+
+	tINTEGER  shift 79
+	tIDENTIFIER  shift 80
+	tSTRING  shift 81
+	tDOUBLE  shift 82
+	tREAD  shift 83
+	tDO  shift 84
+	tNOT  shift 85
+	tUSE  shift 86
+	tCELL  shift 87
+	tNULL  shift 88
+	'+'  shift 89
+	'-'  shift 90
+	'('  shift 91
+	.  error
+
+	expr  goto 164
+	specialexpr  goto 93
+	lval  goto 94
+	strings  goto 95
+
+
+state 124
+	expr : expr '*' . expr  (85)
+
+	tINTEGER  shift 79
+	tIDENTIFIER  shift 80
+	tSTRING  shift 81
+	tDOUBLE  shift 82
+	tREAD  shift 83
+	tDO  shift 84
+	tNOT  shift 85
+	tUSE  shift 86
+	tCELL  shift 87
+	tNULL  shift 88
+	'+'  shift 89
+	'-'  shift 90
+	'('  shift 91
+	.  error
+
+	expr  goto 165
+	specialexpr  goto 93
+	lval  goto 94
+	strings  goto 95
+
+
+state 125
+	expr : expr '/' . expr  (86)
+
+	tINTEGER  shift 79
+	tIDENTIFIER  shift 80
+	tSTRING  shift 81
+	tDOUBLE  shift 82
+	tREAD  shift 83
+	tDO  shift 84
+	tNOT  shift 85
+	tUSE  shift 86
+	tCELL  shift 87
+	tNULL  shift 88
+	'+'  shift 89
+	'-'  shift 90
+	'('  shift 91
+	.  error
+
+	expr  goto 166
+	specialexpr  goto 93
+	lval  goto 94
+	strings  goto 95
+
+
+state 126
+	expr : expr '%' . expr  (87)
+
+	tINTEGER  shift 79
+	tIDENTIFIER  shift 80
+	tSTRING  shift 81
+	tDOUBLE  shift 82
+	tREAD  shift 83
+	tDO  shift 84
+	tNOT  shift 85
+	tUSE  shift 86
+	tCELL  shift 87
+	tNULL  shift 88
+	'+'  shift 89
+	'-'  shift 90
+	'('  shift 91
+	.  error
+
+	expr  goto 167
+	specialexpr  goto 93
+	lval  goto 94
+	strings  goto 95
+
+
+state 127
+	var : type tIDENTIFIER '(' tINITIALLY expr ')' .  (22)
+
+	.  reduce 22
+
+
+state 128
+	expr : lval '?' .  (93)
+
+	.  reduce 93
+
+
+state 129
+	strings : strings tSTRING .  (96)
+
+	.  reduce 96
+
+
+state 130
+	procedure : tDEFINE tPUBLIC tPROCEDURE tIDENTIFIER tON vars tAS . block  (33)
+
+	';'  shift 69
+	.  error
+
+	block  goto 168
+
+
+state 131
+	func : tDEFINE tPUBLIC type tFUNCTION tIDENTIFIER tAS block .  (27)
+
+	.  reduce 27
+
+
+state 132
+	vars : vars . ',' var  (20)
+	func : tDEFINE tPUBLIC type tFUNCTION tIDENTIFIER tON vars . tAS block  (29)
+
+	tAS  shift 169
+	','  shift 78
+	.  error
+
+
+state 133
+	if : tIF . expr tTHEN block tELIF elsif  (64)
+	if : tIF . expr tTHEN block  (65)
+	if : tIF . expr tTHEN block tELSE block  (66)
+
+	tINTEGER  shift 79
+	tIDENTIFIER  shift 80
+	tSTRING  shift 81
+	tDOUBLE  shift 82
+	tREAD  shift 83
+	tDO  shift 84
+	tNOT  shift 85
+	tUSE  shift 86
+	tCELL  shift 87
+	tNULL  shift 88
+	'+'  shift 89
+	'-'  shift 90
+	'('  shift 91
+	.  error
+
+	expr  goto 170
+	specialexpr  goto 93
+	lval  goto 94
+	strings  goto 95
+
+
+state 134
+	instruction : tTWEET . expr ';'  (52)
+
+	tINTEGER  shift 79
+	tIDENTIFIER  shift 80
+	tSTRING  shift 81
+	tDOUBLE  shift 82
+	tREAD  shift 83
+	tDO  shift 84
+	tNOT  shift 85
+	tUSE  shift 86
+	tCELL  shift 87
+	tNULL  shift 88
+	'+'  shift 89
+	'-'  shift 90
+	'('  shift 91
+	.  error
+
+	expr  goto 171
+	specialexpr  goto 93
+	lval  goto 94
+	strings  goto 95
+
+
+state 135
+	instruction : tPOST . expr ';'  (53)
+
+	tINTEGER  shift 79
+	tIDENTIFIER  shift 80
+	tSTRING  shift 81
+	tDOUBLE  shift 82
+	tREAD  shift 83
+	tDO  shift 84
+	tNOT  shift 85
+	tUSE  shift 86
+	tCELL  shift 87
+	tNULL  shift 88
+	'+'  shift 89
+	'-'  shift 90
+	'('  shift 91
+	.  error
+
+	expr  goto 172
+	specialexpr  goto 93
+	lval  goto 94
+	strings  goto 95
+
+
+state 136
+	instruction : tAGAIN . tINTEGER ';'  (54)
+	instruction : tAGAIN . ';'  (55)
+
+	tINTEGER  shift 173
+	';'  shift 174
+	.  error
+
+
+state 137
+	instruction : tSTOP . tINTEGER ';'  (56)
+	instruction : tSTOP . ';'  (57)
+
+	tINTEGER  shift 175
+	';'  shift 176
+	.  error
+
+
+state 138
+	instruction : tRETURN . expr ';'  (58)
+	instruction : tRETURN . ';'  (59)
+
+	tINTEGER  shift 79
+	tIDENTIFIER  shift 80
+	tSTRING  shift 81
+	tDOUBLE  shift 82
+	tREAD  shift 83
+	tDO  shift 84
+	tNOT  shift 85
+	tUSE  shift 86
+	tCELL  shift 87
+	tNULL  shift 88
+	'+'  shift 89
+	'-'  shift 90
+	';'  shift 177
+	'('  shift 91
+	.  error
+
+	expr  goto 178
+	specialexpr  goto 93
+	lval  goto 94
+	strings  goto 95
+
+
+state 139
+	assignment : tASSIGN . expr tTO lval  (71)
+
+	tINTEGER  shift 79
+	tIDENTIFIER  shift 80
+	tSTRING  shift 81
+	tDOUBLE  shift 82
+	tREAD  shift 83
+	tDO  shift 84
+	tNOT  shift 85
+	tUSE  shift 86
+	tCELL  shift 87
+	tNULL  shift 88
+	'+'  shift 89
+	'-'  shift 90
+	'('  shift 91
+	.  error
+
+	expr  goto 179
+	specialexpr  goto 93
+	lval  goto 94
+	strings  goto 95
+
+
+state 140
+	sweep : tSWEEPING . lval tFROM expr tTO expr tBY expr tDO block  (72)
+	sweep : tSWEEPING . lval tFROM expr tTO expr tDO block  (73)
+
+	tIDENTIFIER  shift 80
+	tCELL  shift 87
+	.  error
+
+	lval  goto 180
+
+
+state 141
+	decl : tUSE . type tIDENTIFIER ';'  (10)
+	specialexpr : tUSE . param tFOR tIDENTIFIER  (102)
+
+	tINTEGER  shift 79
+	tIDENTIFIER  shift 80
+	tSTRING  shift 81
+	tDOUBLE  shift 82
+	tREAD  shift 83
+	tINT  shift 4
+	tREAL  shift 5
+	tNEWS  shift 6
+	tFAKE  shift 7
+	tDO  shift 84
+	tNOT  shift 85
+	tUSE  shift 86
+	tCELL  shift 87
+	tNULL  shift 88
+	'+'  shift 89
+	'-'  shift 90
+	'('  shift 91
+	.  error
+
+	param  goto 110
+	expr  goto 111
+	specialexpr  goto 93
+	lval  goto 94
+	type  goto 27
+	smalls  goto 12
+	huges  goto 13
+	fakes  goto 14
+	strings  goto 95
+
+
+state 142
+	block : ';' '{' '}' .  (38)
+
+	.  reduce 38
+
+
+state 143
+	listi : instruction .  (25)
+
+	.  reduce 25
+
+
+state 144
+	instruction : if .  (63)
+
+	.  reduce 63
+
+
+state 145
+	instruction : sweep .  (62)
+
+	.  reduce 62
+
+
+state 146
+	instruction : block . ';'  (60)
+
+	';'  shift 181
+	.  error
+
+
+state 147
+	listd : listd . decl  (4)
+	block : ';' '{' listd . listi '}'  (35)
+	block : ';' '{' listd . '}'  (36)
+
+	tINTEGER  shift 79
+	tIDENTIFIER  shift 80
+	tSTRING  shift 81
+	tDOUBLE  shift 82
+	tIF  shift 133
+	tREAD  shift 83
+	tDEFINE  shift 1
+	tPUBLIC  shift 2
+	tPROCEDURE  shift 3
+	tINT  shift 4
+	tREAL  shift 5
+	tNEWS  shift 6
+	tFAKE  shift 7
+	tTWEET  shift 134
+	tPOST  shift 135
+	tAGAIN  shift 136
+	tSTOP  shift 137
+	tRETURN  shift 138
+	tASSIGN  shift 139
+	tSWEEPING  shift 140
+	tDO  shift 84
+	tNOT  shift 85
+	tUSE  shift 141
+	tCELL  shift 87
+	tNULL  shift 88
+	'+'  shift 89
+	'-'  shift 90
+	';'  shift 69
+	'('  shift 91
+	'}'  shift 182
+	.  error
+
+	instruction  goto 143
+	if  goto 144
+	sweep  goto 145
+	block  goto 146
+	listi  goto 183
+	expr  goto 149
+	assignment  goto 150
+	specialexpr  goto 93
+	lval  goto 94
+	type  goto 11
+	smalls  goto 12
+	huges  goto 13
+	fakes  goto 14
+	func_decl  goto 15
+	procedure_decl  goto 16
+	decl  goto 28
+	var  goto 18
+	func  goto 19
+	procedure  goto 20
+	strings  goto 95
+
+
+state 148
+	listi : listi . instruction  (26)
+	block : ';' '{' listi . '}'  (37)
+
+	tINTEGER  shift 79
+	tIDENTIFIER  shift 80
+	tSTRING  shift 81
+	tDOUBLE  shift 82
+	tIF  shift 133
+	tREAD  shift 83
+	tTWEET  shift 134
+	tPOST  shift 135
+	tAGAIN  shift 136
+	tSTOP  shift 137
+	tRETURN  shift 138
+	tASSIGN  shift 139
+	tSWEEPING  shift 140
+	tDO  shift 84
+	tNOT  shift 85
+	tUSE  shift 86
+	tCELL  shift 87
+	tNULL  shift 88
+	'+'  shift 89
+	'-'  shift 90
+	';'  shift 69
+	'('  shift 91
+	'}'  shift 184
+	.  error
+
+	instruction  goto 185
+	if  goto 144
+	sweep  goto 145
+	block  goto 146
+	expr  goto 149
+	assignment  goto 150
+	specialexpr  goto 93
+	lval  goto 94
+	strings  goto 95
+
+
+state 149
+	instruction : expr . ';'  (51)
+	expr : expr . tOBJECTS  (79)
+	expr : expr . '+' expr  (83)
+	expr : expr . '-' expr  (84)
+	expr : expr . '*' expr  (85)
+	expr : expr . '/' expr  (86)
+	expr : expr . '%' expr  (87)
+	expr : expr . '<' expr  (88)
+	expr : expr . '>' expr  (89)
+	expr : expr . tEQ expr  (90)
+	expr : expr . tAND expr  (91)
+	expr : expr . tOR expr  (92)
+
+	tAND  shift 116
+	tOR  shift 117
+	tOBJECTS  shift 118
+	tEQ  shift 119
+	'>'  shift 120
+	'<'  shift 121
+	'+'  shift 122
+	'-'  shift 123
+	'*'  shift 124
+	'/'  shift 125
+	'%'  shift 126
+	';'  shift 186
+	.  error
+
+
+state 150
+	instruction : assignment . ';'  (61)
+
+	';'  shift 187
+	.  error
+
+
+state 151
+	procedure : tDEFINE tPROCEDURE tIDENTIFIER tON vars tAS block .  (34)
+
+	.  reduce 34
+
+
+state 152
+	func : tDEFINE type tFUNCTION tIDENTIFIER tON vars tAS . block  (30)
+
+	';'  shift 69
+	.  error
+
+	block  goto 188
+
+
+state 153
+	var : tPUBLIC type tIDENTIFIER '(' tINITIALLY expr ')' .  (21)
+
+	.  reduce 21
+
+
+state 154
+	specialexpr : tUSE param tFOR . tIDENTIFIER  (102)
+
+	tIDENTIFIER  shift 189
+	.  error
+
+
+state 155
+	param : param ',' . expr  (98)
+
+	tINTEGER  shift 79
+	tIDENTIFIER  shift 80
+	tSTRING  shift 81
+	tDOUBLE  shift 82
+	tREAD  shift 83
+	tDO  shift 84
+	tNOT  shift 85
+	tUSE  shift 86
+	tCELL  shift 87
+	tNULL  shift 88
+	'+'  shift 89
+	'-'  shift 90
+	'('  shift 91
+	.  error
+
+	expr  goto 190
+	specialexpr  goto 93
+	lval  goto 94
+	strings  goto 95
+
+
+state 156
+	lval : tCELL expr tAT . specialexpr  (100)
+
+	tIDENTIFIER  shift 80
+	tDO  shift 84
+	tUSE  shift 86
+	tCELL  shift 87
+	'('  shift 91
+	.  error
+
+	specialexpr  goto 191
+	lval  goto 192
+
+
+state 157
+	specialexpr : '(' expr ')' .  (104)
+
+	.  reduce 104
+
+
+state 158
+	expr : expr . tOBJECTS  (79)
+	expr : expr . '+' expr  (83)
+	expr : expr . '-' expr  (84)
+	expr : expr . '*' expr  (85)
+	expr : expr . '/' expr  (86)
+	expr : expr . '%' expr  (87)
+	expr : expr . '<' expr  (88)
+	expr : expr . '>' expr  (89)
+	expr : expr . tEQ expr  (90)
+	expr : expr . tAND expr  (91)
+	expr : expr tAND expr .  (91)
+	expr : expr . tOR expr  (92)
+
+	'+'  shift 122
+	'-'  shift 123
+	'*'  shift 124
+	'/'  shift 125
+	'%'  shift 126
+	tTHEN  reduce 91
+	tTO  reduce 91
+	tBY  reduce 91
+	tDO  reduce 91
+	tAND  reduce 91
+	tOR  reduce 91
+	tFOR  reduce 91
+	tAT  reduce 91
+	tOBJECTS  reduce 91
+	tEQ  reduce 91
+	'>'  reduce 91
+	'<'  reduce 91
+	';'  reduce 91
+	','  reduce 91
+	')'  reduce 91
+
+
+state 159
+	expr : expr . tOBJECTS  (79)
+	expr : expr . '+' expr  (83)
+	expr : expr . '-' expr  (84)
+	expr : expr . '*' expr  (85)
+	expr : expr . '/' expr  (86)
+	expr : expr . '%' expr  (87)
+	expr : expr . '<' expr  (88)
+	expr : expr . '>' expr  (89)
+	expr : expr . tEQ expr  (90)
+	expr : expr . tAND expr  (91)
+	expr : expr . tOR expr  (92)
+	expr : expr tOR expr .  (92)
+
+	'+'  shift 122
+	'-'  shift 123
+	'*'  shift 124
+	'/'  shift 125
+	'%'  shift 126
+	tTHEN  reduce 92
+	tTO  reduce 92
+	tBY  reduce 92
+	tDO  reduce 92
+	tAND  reduce 92
+	tOR  reduce 92
+	tFOR  reduce 92
+	tAT  reduce 92
+	tOBJECTS  reduce 92
+	tEQ  reduce 92
+	'>'  reduce 92
+	'<'  reduce 92
+	';'  reduce 92
+	','  reduce 92
+	')'  reduce 92
+
+
+state 160
+	expr : expr . tOBJECTS  (79)
+	expr : expr . '+' expr  (83)
+	expr : expr . '-' expr  (84)
+	expr : expr . '*' expr  (85)
+	expr : expr . '/' expr  (86)
+	expr : expr . '%' expr  (87)
+	expr : expr . '<' expr  (88)
+	expr : expr . '>' expr  (89)
+	expr : expr . tEQ expr  (90)
+	expr : expr tEQ expr .  (90)
+	expr : expr . tAND expr  (91)
+	expr : expr . tOR expr  (92)
+
+	'+'  shift 122
+	'-'  shift 123
+	'*'  shift 124
+	'/'  shift 125
+	'%'  shift 126
+	tTHEN  reduce 90
+	tTO  reduce 90
+	tBY  reduce 90
+	tDO  reduce 90
+	tAND  reduce 90
+	tOR  reduce 90
+	tFOR  reduce 90
+	tAT  reduce 90
+	tOBJECTS  reduce 90
+	tEQ  reduce 90
+	'>'  reduce 90
+	'<'  reduce 90
+	';'  reduce 90
+	','  reduce 90
+	')'  reduce 90
+
+
+state 161
+	expr : expr . tOBJECTS  (79)
+	expr : expr . '+' expr  (83)
+	expr : expr . '-' expr  (84)
+	expr : expr . '*' expr  (85)
+	expr : expr . '/' expr  (86)
+	expr : expr . '%' expr  (87)
+	expr : expr . '<' expr  (88)
+	expr : expr . '>' expr  (89)
+	expr : expr '>' expr .  (89)
+	expr : expr . tEQ expr  (90)
+	expr : expr . tAND expr  (91)
+	expr : expr . tOR expr  (92)
+
+	'+'  shift 122
+	'-'  shift 123
+	'*'  shift 124
+	'/'  shift 125
+	'%'  shift 126
+	tTHEN  reduce 89
+	tTO  reduce 89
+	tBY  reduce 89
+	tDO  reduce 89
+	tAND  reduce 89
+	tOR  reduce 89
+	tFOR  reduce 89
+	tAT  reduce 89
+	tOBJECTS  reduce 89
+	tEQ  reduce 89
+	'>'  reduce 89
+	'<'  reduce 89
+	';'  reduce 89
+	','  reduce 89
+	')'  reduce 89
+
+
+state 162
+	expr : expr . tOBJECTS  (79)
+	expr : expr . '+' expr  (83)
+	expr : expr . '-' expr  (84)
+	expr : expr . '*' expr  (85)
+	expr : expr . '/' expr  (86)
+	expr : expr . '%' expr  (87)
+	expr : expr . '<' expr  (88)
+	expr : expr '<' expr .  (88)
+	expr : expr . '>' expr  (89)
+	expr : expr . tEQ expr  (90)
+	expr : expr . tAND expr  (91)
+	expr : expr . tOR expr  (92)
+
+	'+'  shift 122
+	'-'  shift 123
+	'*'  shift 124
+	'/'  shift 125
+	'%'  shift 126
+	tTHEN  reduce 88
+	tTO  reduce 88
+	tBY  reduce 88
+	tDO  reduce 88
+	tAND  reduce 88
+	tOR  reduce 88
+	tFOR  reduce 88
+	tAT  reduce 88
+	tOBJECTS  reduce 88
+	tEQ  reduce 88
+	'>'  reduce 88
+	'<'  reduce 88
+	';'  reduce 88
+	','  reduce 88
+	')'  reduce 88
+
+
+state 163
+	expr : expr . tOBJECTS  (79)
+	expr : expr . '+' expr  (83)
+	expr : expr '+' expr .  (83)
+	expr : expr . '-' expr  (84)
+	expr : expr . '*' expr  (85)
+	expr : expr . '/' expr  (86)
+	expr : expr . '%' expr  (87)
+	expr : expr . '<' expr  (88)
+	expr : expr . '>' expr  (89)
+	expr : expr . tEQ expr  (90)
+	expr : expr . tAND expr  (91)
+	expr : expr . tOR expr  (92)
+
+	'*'  shift 124
+	'/'  shift 125
+	'%'  shift 126
+	tTHEN  reduce 83
+	tTO  reduce 83
+	tBY  reduce 83
+	tDO  reduce 83
+	tAND  reduce 83
+	tOR  reduce 83
+	tFOR  reduce 83
+	tAT  reduce 83
+	tOBJECTS  reduce 83
+	tEQ  reduce 83
+	'>'  reduce 83
+	'<'  reduce 83
+	'+'  reduce 83
+	'-'  reduce 83
+	';'  reduce 83
+	','  reduce 83
+	')'  reduce 83
+
+
+state 164
+	expr : expr . tOBJECTS  (79)
+	expr : expr . '+' expr  (83)
+	expr : expr . '-' expr  (84)
+	expr : expr '-' expr .  (84)
+	expr : expr . '*' expr  (85)
+	expr : expr . '/' expr  (86)
+	expr : expr . '%' expr  (87)
+	expr : expr . '<' expr  (88)
+	expr : expr . '>' expr  (89)
+	expr : expr . tEQ expr  (90)
+	expr : expr . tAND expr  (91)
+	expr : expr . tOR expr  (92)
+
+	'*'  shift 124
+	'/'  shift 125
+	'%'  shift 126
+	tTHEN  reduce 84
+	tTO  reduce 84
+	tBY  reduce 84
+	tDO  reduce 84
+	tAND  reduce 84
+	tOR  reduce 84
+	tFOR  reduce 84
+	tAT  reduce 84
+	tOBJECTS  reduce 84
+	tEQ  reduce 84
+	'>'  reduce 84
+	'<'  reduce 84
+	'+'  reduce 84
+	'-'  reduce 84
+	';'  reduce 84
+	','  reduce 84
+	')'  reduce 84
+
+
+state 165
+	expr : expr . tOBJECTS  (79)
+	expr : expr . '+' expr  (83)
+	expr : expr . '-' expr  (84)
+	expr : expr . '*' expr  (85)
+	expr : expr '*' expr .  (85)
+	expr : expr . '/' expr  (86)
+	expr : expr . '%' expr  (87)
+	expr : expr . '<' expr  (88)
+	expr : expr . '>' expr  (89)
+	expr : expr . tEQ expr  (90)
+	expr : expr . tAND expr  (91)
+	expr : expr . tOR expr  (92)
+
+	.  reduce 85
+
+
+state 166
+	expr : expr . tOBJECTS  (79)
+	expr : expr . '+' expr  (83)
+	expr : expr . '-' expr  (84)
+	expr : expr . '*' expr  (85)
+	expr : expr . '/' expr  (86)
+	expr : expr '/' expr .  (86)
+	expr : expr . '%' expr  (87)
+	expr : expr . '<' expr  (88)
+	expr : expr . '>' expr  (89)
+	expr : expr . tEQ expr  (90)
+	expr : expr . tAND expr  (91)
+	expr : expr . tOR expr  (92)
+
+	.  reduce 86
+
+
+state 167
+	expr : expr . tOBJECTS  (79)
+	expr : expr . '+' expr  (83)
+	expr : expr . '-' expr  (84)
+	expr : expr . '*' expr  (85)
+	expr : expr . '/' expr  (86)
+	expr : expr . '%' expr  (87)
+	expr : expr '%' expr .  (87)
+	expr : expr . '<' expr  (88)
+	expr : expr . '>' expr  (89)
+	expr : expr . tEQ expr  (90)
+	expr : expr . tAND expr  (91)
+	expr : expr . tOR expr  (92)
+
+	.  reduce 87
+
+
+state 168
+	procedure : tDEFINE tPUBLIC tPROCEDURE tIDENTIFIER tON vars tAS block .  (33)
+
+	.  reduce 33
+
+
+state 169
+	func : tDEFINE tPUBLIC type tFUNCTION tIDENTIFIER tON vars tAS . block  (29)
+
+	';'  shift 69
+	.  error
+
+	block  goto 193
+
+
+state 170
+	if : tIF expr . tTHEN block tELIF elsif  (64)
+	if : tIF expr . tTHEN block  (65)
+	if : tIF expr . tTHEN block tELSE block  (66)
+	expr : expr . tOBJECTS  (79)
+	expr : expr . '+' expr  (83)
+	expr : expr . '-' expr  (84)
+	expr : expr . '*' expr  (85)
+	expr : expr . '/' expr  (86)
+	expr : expr . '%' expr  (87)
+	expr : expr . '<' expr  (88)
+	expr : expr . '>' expr  (89)
+	expr : expr . tEQ expr  (90)
+	expr : expr . tAND expr  (91)
+	expr : expr . tOR expr  (92)
+
+	tTHEN  shift 194
+	tAND  shift 116
+	tOR  shift 117
+	tOBJECTS  shift 118
+	tEQ  shift 119
+	'>'  shift 120
+	'<'  shift 121
+	'+'  shift 122
+	'-'  shift 123
+	'*'  shift 124
+	'/'  shift 125
+	'%'  shift 126
+	.  error
+
+
+state 171
+	instruction : tTWEET expr . ';'  (52)
+	expr : expr . tOBJECTS  (79)
+	expr : expr . '+' expr  (83)
+	expr : expr . '-' expr  (84)
+	expr : expr . '*' expr  (85)
+	expr : expr . '/' expr  (86)
+	expr : expr . '%' expr  (87)
+	expr : expr . '<' expr  (88)
+	expr : expr . '>' expr  (89)
+	expr : expr . tEQ expr  (90)
+	expr : expr . tAND expr  (91)
+	expr : expr . tOR expr  (92)
+
+	tAND  shift 116
+	tOR  shift 117
+	tOBJECTS  shift 118
+	tEQ  shift 119
+	'>'  shift 120
+	'<'  shift 121
+	'+'  shift 122
+	'-'  shift 123
+	'*'  shift 124
+	'/'  shift 125
+	'%'  shift 126
+	';'  shift 195
+	.  error
+
+
+state 172
+	instruction : tPOST expr . ';'  (53)
+	expr : expr . tOBJECTS  (79)
+	expr : expr . '+' expr  (83)
+	expr : expr . '-' expr  (84)
+	expr : expr . '*' expr  (85)
+	expr : expr . '/' expr  (86)
+	expr : expr . '%' expr  (87)
+	expr : expr . '<' expr  (88)
+	expr : expr . '>' expr  (89)
+	expr : expr . tEQ expr  (90)
+	expr : expr . tAND expr  (91)
+	expr : expr . tOR expr  (92)
+
+	tAND  shift 116
+	tOR  shift 117
+	tOBJECTS  shift 118
+	tEQ  shift 119
+	'>'  shift 120
+	'<'  shift 121
+	'+'  shift 122
+	'-'  shift 123
+	'*'  shift 124
+	'/'  shift 125
+	'%'  shift 126
+	';'  shift 196
+	.  error
+
+
+state 173
+	instruction : tAGAIN tINTEGER . ';'  (54)
+
+	';'  shift 197
+	.  error
+
+
+state 174
+	instruction : tAGAIN ';' .  (55)
+
+	.  reduce 55
+
+
+state 175
+	instruction : tSTOP tINTEGER . ';'  (56)
+
+	';'  shift 198
+	.  error
+
+
+state 176
+	instruction : tSTOP ';' .  (57)
+
+	.  reduce 57
+
+
+state 177
+	instruction : tRETURN ';' .  (59)
+
+	.  reduce 59
+
+
+state 178
+	instruction : tRETURN expr . ';'  (58)
+	expr : expr . tOBJECTS  (79)
+	expr : expr . '+' expr  (83)
+	expr : expr . '-' expr  (84)
+	expr : expr . '*' expr  (85)
+	expr : expr . '/' expr  (86)
+	expr : expr . '%' expr  (87)
+	expr : expr . '<' expr  (88)
+	expr : expr . '>' expr  (89)
+	expr : expr . tEQ expr  (90)
+	expr : expr . tAND expr  (91)
+	expr : expr . tOR expr  (92)
+
+	tAND  shift 116
+	tOR  shift 117
+	tOBJECTS  shift 118
+	tEQ  shift 119
+	'>'  shift 120
+	'<'  shift 121
+	'+'  shift 122
+	'-'  shift 123
+	'*'  shift 124
+	'/'  shift 125
+	'%'  shift 126
+	';'  shift 199
+	.  error
+
+
+state 179
+	assignment : tASSIGN expr . tTO lval  (71)
+	expr : expr . tOBJECTS  (79)
+	expr : expr . '+' expr  (83)
+	expr : expr . '-' expr  (84)
+	expr : expr . '*' expr  (85)
+	expr : expr . '/' expr  (86)
+	expr : expr . '%' expr  (87)
+	expr : expr . '<' expr  (88)
+	expr : expr . '>' expr  (89)
+	expr : expr . tEQ expr  (90)
+	expr : expr . tAND expr  (91)
+	expr : expr . tOR expr  (92)
+
+	tTO  shift 200
+	tAND  shift 116
+	tOR  shift 117
+	tOBJECTS  shift 118
+	tEQ  shift 119
+	'>'  shift 120
+	'<'  shift 121
+	'+'  shift 122
+	'-'  shift 123
+	'*'  shift 124
+	'/'  shift 125
+	'%'  shift 126
+	.  error
+
+
+state 180
+	sweep : tSWEEPING lval . tFROM expr tTO expr tBY expr tDO block  (72)
+	sweep : tSWEEPING lval . tFROM expr tTO expr tDO block  (73)
+
+	tFROM  shift 201
+	.  error
+
+
+state 181
+	instruction : block ';' .  (60)
+
+	.  reduce 60
+
+
+state 182
+	block : ';' '{' listd '}' .  (36)
+
+	.  reduce 36
+
+
+state 183
+	listi : listi . instruction  (26)
+	block : ';' '{' listd listi . '}'  (35)
+
+	tINTEGER  shift 79
+	tIDENTIFIER  shift 80
+	tSTRING  shift 81
+	tDOUBLE  shift 82
+	tIF  shift 133
+	tREAD  shift 83
+	tTWEET  shift 134
+	tPOST  shift 135
+	tAGAIN  shift 136
+	tSTOP  shift 137
+	tRETURN  shift 138
+	tASSIGN  shift 139
+	tSWEEPING  shift 140
+	tDO  shift 84
+	tNOT  shift 85
+	tUSE  shift 86
+	tCELL  shift 87
+	tNULL  shift 88
+	'+'  shift 89
+	'-'  shift 90
+	';'  shift 69
+	'('  shift 91
+	'}'  shift 202
+	.  error
+
+	instruction  goto 185
+	if  goto 144
+	sweep  goto 145
+	block  goto 146
+	expr  goto 149
+	assignment  goto 150
+	specialexpr  goto 93
+	lval  goto 94
+	strings  goto 95
+
+
+state 184
+	block : ';' '{' listi '}' .  (37)
+
+	.  reduce 37
+
+
+state 185
+	listi : listi instruction .  (26)
+
+	.  reduce 26
+
+
+state 186
+	instruction : expr ';' .  (51)
+
+	.  reduce 51
+
+
+state 187
+	instruction : assignment ';' .  (61)
+
+	.  reduce 61
+
+
+state 188
+	func : tDEFINE type tFUNCTION tIDENTIFIER tON vars tAS block .  (30)
+
+	.  reduce 30
+
+
+state 189
+	specialexpr : tUSE param tFOR tIDENTIFIER .  (102)
+
+	.  reduce 102
+
+
+state 190
+	expr : expr . tOBJECTS  (79)
+	expr : expr . '+' expr  (83)
+	expr : expr . '-' expr  (84)
+	expr : expr . '*' expr  (85)
+	expr : expr . '/' expr  (86)
+	expr : expr . '%' expr  (87)
+	expr : expr . '<' expr  (88)
+	expr : expr . '>' expr  (89)
+	expr : expr . tEQ expr  (90)
+	expr : expr . tAND expr  (91)
+	expr : expr . tOR expr  (92)
+	param : param ',' expr .  (98)
+
+	tAND  shift 116
+	tOR  shift 117
+	tOBJECTS  shift 118
+	tEQ  shift 119
+	'>'  shift 120
+	'<'  shift 121
+	'+'  shift 122
+	'-'  shift 123
+	'*'  shift 124
+	'/'  shift 125
+	'%'  shift 126
+	tFOR  reduce 98
+	','  reduce 98
+
+
+state 191
+	lval : tCELL expr tAT specialexpr .  (100)
+
+	.  reduce 100
+
+
+state 192
+	specialexpr : lval .  (103)
+
+	.  reduce 103
+
+
+state 193
+	func : tDEFINE tPUBLIC type tFUNCTION tIDENTIFIER tON vars tAS block .  (29)
+
+	.  reduce 29
+
+
+state 194
+	if : tIF expr tTHEN . block tELIF elsif  (64)
+	if : tIF expr tTHEN . block  (65)
+	if : tIF expr tTHEN . block tELSE block  (66)
+
+	';'  shift 69
+	.  error
+
+	block  goto 203
+
+
+state 195
+	instruction : tTWEET expr ';' .  (52)
+
+	.  reduce 52
+
+
+state 196
+	instruction : tPOST expr ';' .  (53)
+
+	.  reduce 53
+
+
+state 197
+	instruction : tAGAIN tINTEGER ';' .  (54)
+
+	.  reduce 54
+
+
+state 198
+	instruction : tSTOP tINTEGER ';' .  (56)
+
+	.  reduce 56
+
+
+state 199
+	instruction : tRETURN expr ';' .  (58)
+
+	.  reduce 58
+
+
+state 200
+	assignment : tASSIGN expr tTO . lval  (71)
+
+	tIDENTIFIER  shift 80
+	tCELL  shift 87
+	.  error
+
+	lval  goto 204
+
+
+state 201
+	sweep : tSWEEPING lval tFROM . expr tTO expr tBY expr tDO block  (72)
+	sweep : tSWEEPING lval tFROM . expr tTO expr tDO block  (73)
+
+	tINTEGER  shift 79
+	tIDENTIFIER  shift 80
+	tSTRING  shift 81
+	tDOUBLE  shift 82
+	tREAD  shift 83
+	tDO  shift 84
+	tNOT  shift 85
+	tUSE  shift 86
+	tCELL  shift 87
+	tNULL  shift 88
+	'+'  shift 89
+	'-'  shift 90
+	'('  shift 91
+	.  error
+
+	expr  goto 205
+	specialexpr  goto 93
+	lval  goto 94
+	strings  goto 95
+
+
+state 202
+	block : ';' '{' listd listi '}' .  (35)
+
+	.  reduce 35
+
+
+state 203
+	if : tIF expr tTHEN block . tELIF elsif  (64)
+	if : tIF expr tTHEN block .  (65)
+	if : tIF expr tTHEN block . tELSE block  (66)
+
+	tELIF  shift 206
+	tELSE  shift 207
+	tINTEGER  reduce 65
+	tIDENTIFIER  reduce 65
+	tSTRING  reduce 65
+	tDOUBLE  reduce 65
+	tIF  reduce 65
+	tREAD  reduce 65
+	tTWEET  reduce 65
+	tPOST  reduce 65
+	tAGAIN  reduce 65
+	tSTOP  reduce 65
+	tRETURN  reduce 65
+	tASSIGN  reduce 65
+	tSWEEPING  reduce 65
+	tDO  reduce 65
+	tNOT  reduce 65
+	tUSE  reduce 65
+	tCELL  reduce 65
+	tNULL  reduce 65
+	'+'  reduce 65
+	'-'  reduce 65
+	';'  reduce 65
+	'('  reduce 65
+	'}'  reduce 65
+
+
+state 204
+	assignment : tASSIGN expr tTO lval .  (71)
+
+	.  reduce 71
+
+
+state 205
+	sweep : tSWEEPING lval tFROM expr . tTO expr tBY expr tDO block  (72)
+	sweep : tSWEEPING lval tFROM expr . tTO expr tDO block  (73)
+	expr : expr . tOBJECTS  (79)
+	expr : expr . '+' expr  (83)
+	expr : expr . '-' expr  (84)
+	expr : expr . '*' expr  (85)
+	expr : expr . '/' expr  (86)
+	expr : expr . '%' expr  (87)
+	expr : expr . '<' expr  (88)
+	expr : expr . '>' expr  (89)
+	expr : expr . tEQ expr  (90)
+	expr : expr . tAND expr  (91)
+	expr : expr . tOR expr  (92)
+
+	tTO  shift 208
+	tAND  shift 116
+	tOR  shift 117
+	tOBJECTS  shift 118
+	tEQ  shift 119
+	'>'  shift 120
+	'<'  shift 121
+	'+'  shift 122
+	'-'  shift 123
+	'*'  shift 124
+	'/'  shift 125
+	'%'  shift 126
+	.  error
+
+
+state 206
+	if : tIF expr tTHEN block tELIF . elsif  (64)
+
+	tINTEGER  shift 79
+	tIDENTIFIER  shift 80
+	tSTRING  shift 81
+	tDOUBLE  shift 82
+	tREAD  shift 83
+	tDO  shift 84
+	tNOT  shift 85
+	tUSE  shift 86
+	tCELL  shift 87
+	tNULL  shift 88
+	'+'  shift 89
+	'-'  shift 90
+	'('  shift 91
+	.  error
+
+	elsif  goto 209
+	expr  goto 210
+	specialexpr  goto 93
+	lval  goto 94
+	strings  goto 95
+
+
+state 207
+	if : tIF expr tTHEN block tELSE . block  (66)
+
+	';'  shift 69
+	.  error
+
+	block  goto 211
+
+
+state 208
+	sweep : tSWEEPING lval tFROM expr tTO . expr tBY expr tDO block  (72)
+	sweep : tSWEEPING lval tFROM expr tTO . expr tDO block  (73)
+
+	tINTEGER  shift 79
+	tIDENTIFIER  shift 80
+	tSTRING  shift 81
+	tDOUBLE  shift 82
+	tREAD  shift 83
+	tDO  shift 84
+	tNOT  shift 85
+	tUSE  shift 86
+	tCELL  shift 87
+	tNULL  shift 88
+	'+'  shift 89
+	'-'  shift 90
+	'('  shift 91
+	.  error
+
+	expr  goto 212
+	specialexpr  goto 93
+	lval  goto 94
+	strings  goto 95
+
+
+state 209
+	if : tIF expr tTHEN block tELIF elsif .  (64)
+	elsif : elsif . tELIF expr tTHEN block  (69)
+	elsif : elsif . tELIF expr tTHEN block tELSE block  (70)
+
+	tELIF  shift 213
+	tINTEGER  reduce 64
+	tIDENTIFIER  reduce 64
+	tSTRING  reduce 64
+	tDOUBLE  reduce 64
+	tIF  reduce 64
+	tREAD  reduce 64
+	tTWEET  reduce 64
+	tPOST  reduce 64
+	tAGAIN  reduce 64
+	tSTOP  reduce 64
+	tRETURN  reduce 64
+	tASSIGN  reduce 64
+	tSWEEPING  reduce 64
+	tDO  reduce 64
+	tNOT  reduce 64
+	tUSE  reduce 64
+	tCELL  reduce 64
+	tNULL  reduce 64
+	'+'  reduce 64
+	'-'  reduce 64
+	';'  reduce 64
+	'('  reduce 64
+	'}'  reduce 64
+
+
+state 210
+	elsif : expr . tTHEN block  (67)
+	elsif : expr . tTHEN block tELSE block  (68)
+	expr : expr . tOBJECTS  (79)
+	expr : expr . '+' expr  (83)
+	expr : expr . '-' expr  (84)
+	expr : expr . '*' expr  (85)
+	expr : expr . '/' expr  (86)
+	expr : expr . '%' expr  (87)
+	expr : expr . '<' expr  (88)
+	expr : expr . '>' expr  (89)
+	expr : expr . tEQ expr  (90)
+	expr : expr . tAND expr  (91)
+	expr : expr . tOR expr  (92)
+
+	tTHEN  shift 214
+	tAND  shift 116
+	tOR  shift 117
+	tOBJECTS  shift 118
+	tEQ  shift 119
+	'>'  shift 120
+	'<'  shift 121
+	'+'  shift 122
+	'-'  shift 123
+	'*'  shift 124
+	'/'  shift 125
+	'%'  shift 126
+	.  error
+
+
+state 211
+	if : tIF expr tTHEN block tELSE block .  (66)
+
+	.  reduce 66
+
+
+state 212
+	sweep : tSWEEPING lval tFROM expr tTO expr . tBY expr tDO block  (72)
+	sweep : tSWEEPING lval tFROM expr tTO expr . tDO block  (73)
+	expr : expr . tOBJECTS  (79)
+	expr : expr . '+' expr  (83)
+	expr : expr . '-' expr  (84)
+	expr : expr . '*' expr  (85)
+	expr : expr . '/' expr  (86)
+	expr : expr . '%' expr  (87)
+	expr : expr . '<' expr  (88)
+	expr : expr . '>' expr  (89)
+	expr : expr . tEQ expr  (90)
+	expr : expr . tAND expr  (91)
+	expr : expr . tOR expr  (92)
+
+	tBY  shift 215
+	tDO  shift 216
+	tAND  shift 116
+	tOR  shift 117
+	tOBJECTS  shift 118
+	tEQ  shift 119
+	'>'  shift 120
+	'<'  shift 121
+	'+'  shift 122
+	'-'  shift 123
+	'*'  shift 124
+	'/'  shift 125
+	'%'  shift 126
+	.  error
+
+
+state 213
+	elsif : elsif tELIF . expr tTHEN block  (69)
+	elsif : elsif tELIF . expr tTHEN block tELSE block  (70)
+
+	tINTEGER  shift 79
+	tIDENTIFIER  shift 80
+	tSTRING  shift 81
+	tDOUBLE  shift 82
+	tREAD  shift 83
+	tDO  shift 84
+	tNOT  shift 85
+	tUSE  shift 86
+	tCELL  shift 87
+	tNULL  shift 88
+	'+'  shift 89
+	'-'  shift 90
+	'('  shift 91
+	.  error
+
+	expr  goto 217
+	specialexpr  goto 93
+	lval  goto 94
+	strings  goto 95
+
+
+state 214
+	elsif : expr tTHEN . block  (67)
+	elsif : expr tTHEN . block tELSE block  (68)
+
+	';'  shift 69
+	.  error
+
+	block  goto 218
+
+
+state 215
+	sweep : tSWEEPING lval tFROM expr tTO expr tBY . expr tDO block  (72)
+
+	tINTEGER  shift 79
+	tIDENTIFIER  shift 80
+	tSTRING  shift 81
+	tDOUBLE  shift 82
+	tREAD  shift 83
+	tDO  shift 84
+	tNOT  shift 85
+	tUSE  shift 86
+	tCELL  shift 87
+	tNULL  shift 88
+	'+'  shift 89
+	'-'  shift 90
+	'('  shift 91
+	.  error
+
+	expr  goto 219
+	specialexpr  goto 93
+	lval  goto 94
+	strings  goto 95
+
+
+state 216
+	sweep : tSWEEPING lval tFROM expr tTO expr tDO . block  (73)
+
+	';'  shift 69
+	.  error
+
+	block  goto 220
+
+
+state 217
+	elsif : elsif tELIF expr . tTHEN block  (69)
+	elsif : elsif tELIF expr . tTHEN block tELSE block  (70)
+	expr : expr . tOBJECTS  (79)
+	expr : expr . '+' expr  (83)
+	expr : expr . '-' expr  (84)
+	expr : expr . '*' expr  (85)
+	expr : expr . '/' expr  (86)
+	expr : expr . '%' expr  (87)
+	expr : expr . '<' expr  (88)
+	expr : expr . '>' expr  (89)
+	expr : expr . tEQ expr  (90)
+	expr : expr . tAND expr  (91)
+	expr : expr . tOR expr  (92)
+
+	tTHEN  shift 221
+	tAND  shift 116
+	tOR  shift 117
+	tOBJECTS  shift 118
+	tEQ  shift 119
+	'>'  shift 120
+	'<'  shift 121
+	'+'  shift 122
+	'-'  shift 123
+	'*'  shift 124
+	'/'  shift 125
+	'%'  shift 126
+	.  error
+
+
+state 218
+	elsif : expr tTHEN block .  (67)
+	elsif : expr tTHEN block . tELSE block  (68)
+
+	tELSE  shift 222
+	tINTEGER  reduce 67
+	tIDENTIFIER  reduce 67
+	tSTRING  reduce 67
+	tDOUBLE  reduce 67
+	tIF  reduce 67
+	tREAD  reduce 67
+	tTWEET  reduce 67
+	tPOST  reduce 67
+	tAGAIN  reduce 67
+	tSTOP  reduce 67
+	tRETURN  reduce 67
+	tELIF  reduce 67
+	tASSIGN  reduce 67
+	tSWEEPING  reduce 67
+	tDO  reduce 67
+	tNOT  reduce 67
+	tUSE  reduce 67
+	tCELL  reduce 67
+	tNULL  reduce 67
+	'+'  reduce 67
+	'-'  reduce 67
+	';'  reduce 67
+	'('  reduce 67
+	'}'  reduce 67
+
+
+state 219
+	sweep : tSWEEPING lval tFROM expr tTO expr tBY expr . tDO block  (72)
+	expr : expr . tOBJECTS  (79)
+	expr : expr . '+' expr  (83)
+	expr : expr . '-' expr  (84)
+	expr : expr . '*' expr  (85)
+	expr : expr . '/' expr  (86)
+	expr : expr . '%' expr  (87)
+	expr : expr . '<' expr  (88)
+	expr : expr . '>' expr  (89)
+	expr : expr . tEQ expr  (90)
+	expr : expr . tAND expr  (91)
+	expr : expr . tOR expr  (92)
+
+	tDO  shift 223
+	tAND  shift 116
+	tOR  shift 117
+	tOBJECTS  shift 118
+	tEQ  shift 119
+	'>'  shift 120
+	'<'  shift 121
+	'+'  shift 122
+	'-'  shift 123
+	'*'  shift 124
+	'/'  shift 125
+	'%'  shift 126
+	.  error
+
+
+state 220
+	sweep : tSWEEPING lval tFROM expr tTO expr tDO block .  (73)
+
+	.  reduce 73
+
+
+state 221
+	elsif : elsif tELIF expr tTHEN . block  (69)
+	elsif : elsif tELIF expr tTHEN . block tELSE block  (70)
+
+	';'  shift 69
+	.  error
+
+	block  goto 224
+
+
+state 222
+	elsif : expr tTHEN block tELSE . block  (68)
+
+	';'  shift 69
+	.  error
+
+	block  goto 225
+
+
+state 223
+	sweep : tSWEEPING lval tFROM expr tTO expr tBY expr tDO . block  (72)
+
+	';'  shift 69
+	.  error
+
+	block  goto 226
+
+
+state 224
+	elsif : elsif tELIF expr tTHEN block .  (69)
+	elsif : elsif tELIF expr tTHEN block . tELSE block  (70)
+
+	tELSE  shift 227
+	tINTEGER  reduce 69
+	tIDENTIFIER  reduce 69
+	tSTRING  reduce 69
+	tDOUBLE  reduce 69
+	tIF  reduce 69
+	tREAD  reduce 69
+	tTWEET  reduce 69
+	tPOST  reduce 69
+	tAGAIN  reduce 69
+	tSTOP  reduce 69
+	tRETURN  reduce 69
+	tELIF  reduce 69
+	tASSIGN  reduce 69
+	tSWEEPING  reduce 69
+	tDO  reduce 69
+	tNOT  reduce 69
+	tUSE  reduce 69
+	tCELL  reduce 69
+	tNULL  reduce 69
+	'+'  reduce 69
+	'-'  reduce 69
+	';'  reduce 69
+	'('  reduce 69
+	'}'  reduce 69
+
+
+state 225
+	elsif : expr tTHEN block tELSE block .  (68)
+
+	.  reduce 68
+
+
+state 226
+	sweep : tSWEEPING lval tFROM expr tTO expr tBY expr tDO block .  (72)
+
+	.  reduce 72
+
+
+state 227
+	elsif : elsif tELIF expr tTHEN block tELSE . block  (70)
+
+	';'  shift 69
+	.  error
+
+	block  goto 228
+
+
+state 228
+	elsif : elsif tELIF expr tTHEN block tELSE block .  (70)
+
+	.  reduce 70
+
+
+60 terminals, 26 nonterminals
+105 grammar rules, 229 states
